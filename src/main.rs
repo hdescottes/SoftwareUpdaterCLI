@@ -1,3 +1,9 @@
+use crate::custom::custom_menu;
+
+mod custom;
+mod data;
+mod utils;
+
 fn main() {
-    println!("Hello, world!");
+    custom_menu();
 }

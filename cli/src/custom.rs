@@ -3,7 +3,6 @@ use crate::utils::run_command;
 use dialoguer::{Input, Select};
 use semver::Version;
 
-
 pub fn custom_menu() {
     let mut apps = load_apps();
 
@@ -22,14 +21,29 @@ pub fn custom_menu() {
             .default(0)
             .interact()
             .unwrap();
-        
-        match selection {
-            0 => list_custom(&apps),
-            1 => add_custom(&mut apps),
-            2 => remove_custom(&mut apps),
-            3 => break,
-            _ => unreachable!(),
+
+        if !handle_menu_selection(selection, &mut apps) {
+            break;
         }
+    }
+}
+
+pub fn handle_menu_selection(selection: usize, apps: &mut Vec<CustomApp>) -> bool {
+    match selection {
+        0 => {
+            list_custom(apps);
+            true
+        }
+        1 => {
+            add_custom(apps);
+            true
+        }
+        2 => {
+            remove_custom(apps);
+            true
+        }
+        3 => false, // quitter
+        _ => unreachable!(),
     }
 }
 
@@ -121,4 +135,16 @@ fn remove_custom(apps: &mut Vec<CustomApp>) {
     apps.remove(selection);
     save_apps(&apps);
     println!("Logiciel supprimé.");
+}
+
+#[cfg(test)]
+mod tests {
+    use crate::custom;
+    use test_case::test_case;
+
+    #[test_case("1.0.0", "1.1.0" => true)]
+    #[test_case("1.0.0", "1.0.0" => false)]
+    fn is_update_available(current: &str, target: &str) -> bool {
+        custom::is_update_available(current, target)
+    }
 }

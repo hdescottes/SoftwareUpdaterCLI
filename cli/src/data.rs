@@ -4,7 +4,7 @@ use std::io::{Read, Write};
 use std::path::Path;
 
 
-const FILE_PATH: &str = "apps.json";
+const FILE_PATH: &str = "cli/apps.json";
 
 
 #[derive(Debug, Serialize, Deserialize, Clone)]

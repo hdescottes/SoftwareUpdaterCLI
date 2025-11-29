@@ -1,6 +1,5 @@
 use std::process::Command;
 
-
 pub fn run_command(cmd: &str) -> String {
     if cfg!(target_os = "windows") {
         Command::new("cmd")

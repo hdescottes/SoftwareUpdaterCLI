@@ -3,9 +3,7 @@ use std::fs::File;
 use std::io::{Read, Write};
 use std::path::Path;
 
-
 const FILE_PATH: &str = "cli/apps.json";
-
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct CustomApp {

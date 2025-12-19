@@ -1,5 +1,5 @@
-use crate::data::{load_apps, save_apps, CustomApp};
-use crate::utils::run_command;
+use super::data::{load_apps, save_apps, CustomApp};
+use super::utils::run_command;
 use dialoguer::{Input, Select};
 use semver::Version;
 
@@ -47,7 +47,6 @@ pub fn handle_menu_selection(selection: usize, apps: &mut Vec<CustomApp>) -> boo
     }
 }
 
-
 fn list_custom(apps: &[CustomApp]) {
     if apps.is_empty() {
         println!("Aucun logiciel personnalisé enregistré.");
@@ -74,7 +73,6 @@ fn list_custom(apps: &[CustomApp]) {
     }
 }
 
-
 fn is_update_available(current: &str, latest: &str) -> bool {
     let v1 = Version::parse(current.trim()).ok();
     let v2 = Version::parse(latest.trim()).ok();
@@ -84,7 +82,6 @@ fn is_update_available(current: &str, latest: &str) -> bool {
         _ => false,
     }
 }
-
 
 fn add_custom(apps: &mut Vec<CustomApp>) {
     let name: String = Input::new()
@@ -117,7 +114,6 @@ fn add_custom(apps: &mut Vec<CustomApp>) {
     println!("Logiciel ajouté avec succès.");
 }
 
-
 fn remove_custom(apps: &mut Vec<CustomApp>) {
     if apps.is_empty() {
         println!("Aucun logiciel à supprimer.");
@@ -139,12 +135,12 @@ fn remove_custom(apps: &mut Vec<CustomApp>) {
 
 #[cfg(test)]
 mod tests {
-    use crate::custom;
+    use super::*;
     use test_case::test_case;
 
     #[test_case("1.0.0", "1.1.0" => true)]
     #[test_case("1.0.0", "1.0.0" => false)]
-    fn is_update_available(current: &str, target: &str) -> bool {
-        custom::is_update_available(current, target)
+    fn test_is_update_available(current: &str, target: &str) -> bool {
+        is_update_available(current, target)
     }
 }

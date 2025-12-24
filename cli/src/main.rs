@@ -1,5 +1,5 @@
 use clap::Parser;
-use cli::custom::custom_menu;
+use cli::app::menu::custom_menu;
 use std::path::PathBuf;
 
 #[derive(Debug, Parser)]

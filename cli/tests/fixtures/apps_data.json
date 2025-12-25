@@ -1,0 +1,14 @@
+[
+  {
+    "name": "Intellij idea ICC",
+    "update_command": "update command Intellij idea ICC",
+    "current_version_command": "current version command Intellij idea ICC",
+    "latest_version_command": "latest version command Intellij idea ICC"
+  },
+  {
+    "name": "Notepad ++",
+    "update_command": "update command Notepad ++",
+    "current_version_command": "current version command Notepad ++",
+    "latest_version_command": "latest version command Notepad ++"
+  }
+]

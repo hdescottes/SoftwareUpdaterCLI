@@ -1,8 +1,8 @@
 use crate::app::user_input::UserInput;
 use crate::domain::custom_app::CustomApp;
 use crate::storage::store::save_apps;
+use crate::use_cases::remove_select::RemoveSelect;
 use crate::use_cases::utils::run_command;
-use dialoguer::Select;
 use semver::Version;
 use std::path::Path;
 
@@ -63,19 +63,18 @@ pub fn add_custom<I: UserInput>(
     println!("Logiciel ajouté avec succès.");
 }
 
-pub fn remove_custom(apps: &mut Vec<CustomApp>, file_path: &Path) {
+pub fn remove_custom<S: RemoveSelect>(
+    apps: &mut Vec<CustomApp>,
+    input: &S,
+    file_path: &Path
+) {
     if apps.is_empty() {
         println!("Aucun logiciel à supprimer.");
         return;
     }
 
     let items: Vec<String> = apps.iter().map(|a| a.name.clone()).collect();
-    let selection = Select::new()
-        .with_prompt("Quel logiciel voulez-vous supprimer ?")
-        .items(&items)
-        .default(0)
-        .interact()
-        .unwrap();
+    let selection = input.select(&items);
 
     apps.remove(selection);
     save_apps(&apps, file_path);

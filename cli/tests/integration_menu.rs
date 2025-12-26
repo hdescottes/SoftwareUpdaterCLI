@@ -46,7 +46,7 @@ fn test_custom_menu_add_app() {
     let input = MockInput::new(vec![
         "TestApp",
         "update cmd",
-        "current version cmd",
+        "current version path",
         "latest version cmd",
     ]);
 
@@ -67,7 +67,7 @@ fn test_custom_menu_add_app() {
     assert_eq!(result.len(), 1);
     assert!(content.contains("TestApp"));
     assert!(content.contains("update cmd"));
-    assert!(content.contains("current version cmd"));
+    assert!(content.contains("current version path"));
     assert!(content.contains("latest version cmd"));
 }
 

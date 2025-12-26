@@ -1,4 +1,4 @@
-use std::process::Command;
+/*use std::process::Command;
 
 pub fn run_command(cmd: &str) -> String {
     if cfg!(target_os = "windows") {
@@ -15,4 +15,4 @@ pub fn run_command(cmd: &str) -> String {
             .map(|o| String::from_utf8_lossy(&o.stdout).to_string())
             .unwrap_or_else(|_| "Erreur d'exécution".to_string())
     }
-}
+}*/

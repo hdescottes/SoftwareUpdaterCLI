@@ -1,12 +1,15 @@
 use crate::app::user_input::UserInput;
 use crate::domain::custom_app::CustomApp;
 use crate::storage::store::save_apps;
+use crate::use_cases::latest_version_api::retrieve_latest_version;
 use crate::use_cases::remove_select::RemoveSelect;
-use crate::use_cases::utils::run_command;
 use semver::Version;
+use serde_json::Value;
+use std::fs;
 use std::path::Path;
 
-pub fn list_custom(apps: &[CustomApp]) {
+#[tokio::main]
+pub async fn list_custom(apps: &[CustomApp]) {
     if apps.is_empty() {
         println!("Aucun logiciel personnalisé enregistré.");
         return;
@@ -17,8 +20,8 @@ pub fn list_custom(apps: &[CustomApp]) {
     for app in apps {
         println!("📦 {}", app.name);
 
-        let current = run_command(&app.current_version_command).trim().to_string();
-        let latest = run_command(&app.latest_version_command).trim().to_string();
+        let current = read_version(&app.current_version_path);
+        let latest = retrieve_latest_version(&app.latest_version_url).await;
 
         println!(" Version actuelle : {}", current);
         println!(" Version cible : {}", latest);
@@ -30,6 +33,24 @@ pub fn list_custom(apps: &[CustomApp]) {
             println!(" ✅ À jour");
         }
     }
+}
+
+fn read_version(json_path: &str) -> String {
+    let possible_keys = ["version", "appVersion"];
+
+    fs::read_to_string(json_path)
+        .ok()
+        .and_then(|c| serde_json::from_str::<Value>(&c).ok())
+        .and_then(|json| {
+            possible_keys
+                .iter()
+                .find_map(|key| {
+                    json.get(*key)
+                        .and_then(|v| v.as_str())
+                        .map(str::to_string)
+                })
+        })
+        .unwrap_or_default()
 }
 
 fn is_update_available(current: &str, latest: &str) -> bool {
@@ -49,14 +70,14 @@ pub fn add_custom<I: UserInput>(
 ) {
     let name = input.ask("Nom du logiciel");
     let update_command = input.ask("Commande pour mettre à jour");
-    let current_version_command = input.ask("Commande pour obtenir la version actuelle");
-    let latest_version_command = input.ask("Commande pour obtenir la dernière version");
+    let current_version_path = input.ask("Chemin de la version actuelle");
+    let latest_version_url = input.ask("URL pour obtenir la dernière version");
 
     apps.push(CustomApp {
         name,
         update_command,
-        current_version_command,
-        latest_version_command,
+        current_version_path,
+        latest_version_url,
     });
 
     save_apps(apps, file_path);

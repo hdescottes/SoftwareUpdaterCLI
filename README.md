@@ -12,7 +12,7 @@
   {
     "name": "Intellij idea ICC",
     "update_command": "winget upgrade JetBrains.IntelliJIDEA.Community",
-    "current_version_command": "findstr \"\\\"version\\\": \" \"C:\\Program Files\\JetBrains\\IntelliJ IDEA Community Edition 2024.3.3\\product-info.json\"",
-    "latest_version_command": "curl -s \"https://data.services.jetbrains.com/products/releases?code=IIC&latest=true&type=release\" | awk -F'\"' '/\"version\"'"
+    "current_version_path": "C:\\Program Files\\JetBrains\\IntelliJ IDEA Community Edition 2024.3.3\\product-info.json\",
+    "latest_version_command": "https://data.services.jetbrains.com/products/releases?code=IIC&latest=true&type=release\"
   }
 ]
